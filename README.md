@@ -1,5 +1,5 @@
 
-# mYNotes - React Notes App with Authentication and OTP Verification
+# mYNotes - MERN Notes App with Authentication
 
 A modern, secure, and responsive Note-Taking web application built with React, Zustand, Chakra UI and Node, Express, MongoDB. Features user authentication, OTP email verification, and CRUD operations for notes.
 
@@ -176,7 +176,7 @@ CLIENT_URL=http://localhost:5173
 - Bookmark Functionality
 - Note search and filtering  
 - Dark mode support  
-- Better error handling and notifications  
+- Better error handling  
 - Testing (unit and integration)  
 
 ---
