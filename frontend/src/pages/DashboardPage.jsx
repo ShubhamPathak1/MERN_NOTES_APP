@@ -12,6 +12,7 @@ import { useNotesStore } from '../store/NotesStore';
 import { useUserStore } from '../store/UserStore';
 import NoNotes from '../components/NoNotes';
 import LoadingSpinner from '../components/LoadingSpinner';
+import { useState } from 'react';
 
 const DashboardPage = () => {
   const { notes, getNotes, error, isLoading } = useNotesStore();
@@ -23,9 +24,16 @@ const DashboardPage = () => {
     }
   }, [user._id, getNotes]);
 
+  
+  const [searchVal, setSearchVal] = useState("");
+  
+  const handleSearchNote = (e)=> {
+    setSearchVal(e.target.value.toLowerCase())
+  }
   return (
+
     <>
-      <Nav />
+      <Nav searchVal={searchVal} handleSearchNote={handleSearchNote} setSearchVal={setSearchVal} />
       <Container maxW="container.xl" py={6}>
         {/* Loading state */}
         {isLoading ? (
@@ -40,7 +48,10 @@ const DashboardPage = () => {
             columns={{ base: 1, sm: 1, md: 2, lg: 3, xl: 4 }}
             spacing={6}
           >
-            {notes.map((note) => (
+            {notes.filter((note)=>
+            (note.title.toLowerCase().includes(searchVal)||
+            note.tags.some(tag=> tag.toLowerCase().includes(searchVal))||
+            note.content.toLowerCase().includes(searchVal))).map((note) => (
               <NoteTile key={note._id} note={note}  />
             ))}
           </SimpleGrid>

@@ -25,7 +25,7 @@ import React from 'react';
 import { useUserStore } from '../store/UserStore';
 import {Link, useNavigate} from "react-router-dom"
 
-const Nav = () => {
+const Nav = ({searchVal, handleSearchNote}) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const {user, logout} = useUserStore();
@@ -35,6 +35,8 @@ const Nav = () => {
   const handleLogout = async ()=> {
     logout();
   }
+
+  
 
   return (
     <>
@@ -62,7 +64,8 @@ const Nav = () => {
             <InputLeftElement pointerEvents="none">
               <MdSearch />
             </InputLeftElement>
-            <Input type="text" placeholder="Search Notes" />
+            <Input type="text" placeholder="Search Notes" value={searchVal}
+            onChange={handleSearchNote} />
           </InputGroup>
 
           <Link to={"/create-note"} ><Button leftIcon={<MdAddBox />} colorScheme="teal">Create a Note</Button></Link>
@@ -99,7 +102,8 @@ const Nav = () => {
     <InputLeftElement pointerEvents="none">
       <MdSearch />
     </InputLeftElement>
-    <Input type="text" placeholder="Search Notes" />
+    <Input type="text" placeholder="Search Notes" value={searchVal}
+            onChange={handleSearchNote} />
   </InputGroup>
 
   <Link to={"/create-note"} ><Button leftIcon={<MdAddBox />} colorScheme="teal">Create a Note</Button></Link>
@@ -109,7 +113,7 @@ const Nav = () => {
     <Text fontWeight="medium">Hi, {user.username}</Text>
   </HStack>
 
-  <Button colorScheme="teal" variant="outline" w="100%">
+  <Button colorScheme="teal" variant="outline" w="100%" onClick={()=> {navigate("/myprofile")}}>
     My Profile
   </Button>
   <Button colorScheme="red" variant="outline" w="100%" onClick={handleLogout}>

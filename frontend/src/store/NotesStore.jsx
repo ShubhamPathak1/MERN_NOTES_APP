@@ -11,6 +11,7 @@ export const useNotesStore = create((set)=> ({
     note: null,
     error:null,
     isLoading: false,
+    beingSearchedNotes: [],
     setNotes: (notes)=> set({notes}),
 
     createNote: async (title, content, tags, user) => {
