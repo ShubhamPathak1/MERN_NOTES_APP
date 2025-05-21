@@ -23,9 +23,9 @@ import { useNavigate } from 'react-router-dom';
 
 const MotionCard = motion(Card);
 
-const NoteTile = ({ note }) => {
+const NoteTile = ({ note}) => {
   const navigate = useNavigate();
-  const { deleteNote } = useNotesStore();
+  const { deleteNote, bookmarkNote} = useNotesStore();
   const toast = useToast();
 
   const handleDeleteNote = async (noteId) => {
@@ -47,6 +47,26 @@ const NoteTile = ({ note }) => {
       });
     }
   };
+
+  const handleBookmark = async (noteId)=> {
+    try {
+      await bookmarkNote(noteId) 
+      toast({
+        title: `Note ${note.bookmarked ? "unbookmarked" : "bookmarked"}`,
+        status: 'success',
+        duration: 3000,
+        isClosable: true,
+      });
+    } catch (error) {
+      toast({
+        title: 'Error bookmarking note.',
+        description: error.message || 'Something went wrong.',
+        status: 'error',
+        duration: 3000,
+        isClosable: true,
+      });
+    }
+  }
 
   const updatedAtDate = new Date(note.updatedAt).toLocaleString();
 
@@ -77,12 +97,17 @@ const NoteTile = ({ note }) => {
 
           <HStack>
             <IconButton
-              variant="solid"
+              variant={note.bookmarked? "solid" :'outline'}
               size="sm"
-              colorScheme="gray"
+              colorScheme={note.bookmarked? "green" :'gray'}
               icon={<MdBookmarkBorder />}
               aria-label="Bookmark"
-              onClick={(e) => e.stopPropagation()}
+              className='bookmarkBtn'
+              onClick={(e) => {
+                e.stopPropagation();
+                handleBookmark(note._id)
+              }
+            }
             />
             <IconButton
               variant="solid"

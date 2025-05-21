@@ -78,6 +78,30 @@ export const useNotesStore = create((set)=> ({
             set({isLoading:true, error:error.response.data.message})
             throw error;
         }
-    }
+    },
+    bookmarkNote: async (noteId) => {
+  set({ isLoading: true });
+  try {
+    const response = await axios.patch(`${NOTES_API_URL}/bookmark/${noteId}`);
+    const updatedNote = response.data.note;
+
+    set(state => {
+      const updatedNotes = state.notes.map(note =>
+        note._id === noteId ? updatedNote : note
+      );
+
+      updatedNotes.sort((a, b) => (b.bookmarked === true) - (a.bookmarked === true));
+
+      return {
+        notes: updatedNotes,
+        isLoading: false
+      };
+    });
+  } catch (error) {
+    set({ isLoading: false, error: error.response?.data?.message || 'Error bookmarking note' });
+    throw error;
+  }
+}
+
 
 }))

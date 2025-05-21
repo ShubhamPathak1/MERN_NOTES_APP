@@ -41,7 +41,7 @@ const DashboardPage = () => {
             spacing={6}
           >
             {notes.map((note) => (
-              <NoteTile key={note._id} note={note} />
+              <NoteTile key={note._id} note={note}  />
             ))}
           </SimpleGrid>
         )}

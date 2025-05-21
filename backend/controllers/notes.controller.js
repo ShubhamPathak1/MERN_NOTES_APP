@@ -9,7 +9,7 @@ export const getNotes = async (req, res)=> {
         if (!user) {
             return res.status(400).json({success:false, message:"User Not Authorized"})
         }
-        const notes = await Notes.find({user}).sort({updatedAt:-1})
+        const notes = await Notes.find({user}).sort({bookmarked:-1, updatedAt:-1})
         res.status(200).json({success:true, notes})
     } catch (error) {
         console.log("Error fetching notes", error.message)
@@ -87,3 +87,21 @@ export const deleteNotes = async (req, res)=> {
     }
 }
 
+export const bookmarkNotes = async (req, res)=> {
+    const {id} = req.params;
+    try {
+        if (!id) {
+            return res.status(400).json({success:false, message:"Notes not found"})
+        }
+        const note = await Notes.findById(id);
+        if (!note) {
+            return res.status(400).json({success:false, message:"Notes not found"})
+        }
+        note.bookmarked = !note.bookmarked;
+        await note.save();
+        res.status(200).json({success:true, message:"Note Bookmarked", note:note})
+    } catch (error) {
+        console.log("Error bookmarking note", error.message)
+        res.status(500).json({success:false, message:error.message})
+    }
+}
