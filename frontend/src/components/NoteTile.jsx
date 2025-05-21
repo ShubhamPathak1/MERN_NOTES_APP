@@ -53,7 +53,7 @@ const NoteTile = ({ note}) => {
       await bookmarkNote(noteId) 
       toast({
         title: `Note ${note.bookmarked ? "unbookmarked" : "bookmarked"}`,
-        status: 'success',
+        status: `${note.bookmarked ? "info" : "success"}`,
         duration: 3000,
         isClosable: true,
       });
